@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #3494E6 0%, #EC6EAD 100%);
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-color: #fff;
+            z-index: 2;
+            appearance: none;
+            -webkit-appearance: none;
+            text-indent: 0.01px;
+            text-overflow: '';
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form id="profileForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required>
+
+        <label for="gpa">GPA:</label>
+        <select id="gpa" required>
+            <option value="" disabled selected hidden>Select GPA</option>
+            <option value="<2.0">&lt;2.0</option>
+            <option value="2.0-2.5">2.0-2.5</option>
+            <option value="3.0-3.5">3.0-3.5</option>
+            <option value="3.5-4.0">3.5-4.0</option>
+            <option value=">4.0">&gt;4.0</option>
+        </select>
+
+        <label for="grade">Grade:</label>
+        <select id="grade" required>
+            <option value="" disabled selected hidden>Select Grade</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+
+        <label for="rank">Rank:</label>
+        <select id="rank" required>
+            <option value="" disabled selected hidden>Select Rank</option>
+            <option value="1">1</option>
+            <option value="2-10">2-10</option>
+            <option value="10-50">10-50</option>
+            <option value=">50">&gt;50</option>
+        </select>
+
+        <label for="sat">SAT:</label>
+        <input type="text" id="sat">
+
+        <label for="act">ACT:</label>
+        <input type="text" id="act">
+
+        <label for="preferredSchool">Preferred School:</label>
+        <select id="preferredSchool" required>
+            <option value="" disabled selected hidden>Select Preferred School</option>
+            <option value="UCF">UCF</option>
+            <option value="FSU">FSU</option>
+            <option value="UF">UF</option>
+            <option value="GT">GT</option>
+            <option value="UA">UA</option>
+        </select>
+
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+
+    <script>
+        class Student {
+            constructor(firstName, lastName, gpa, grade, rank, sat, act, preferredSchool) {
+                this.firstName = firstName;
+                this.lastName = lastName;
+                this.gpa = gpa;
+                this.grade = grade;
+                this.rank = rank;
+                this.sat = sat;
+                this.act = act;
+                this.preferredSchool = preferredSchool;
+            }
+        }
+
+        function submitForm() {
+            // Retrieve values from the form
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const gpa = document.getElementById('gpa').value;
+            const grade = document.getElementById('grade').value;
+            const rank = document.getElementById('rank').value;
+            const sat = document.getElementById('sat').value;
+            const act = document.getElementById('act').value;
+            const preferredSchool = document.getElementById('preferredSchool').value;
+
+            // Check if all fields are filled out
+            if (!firstName || !lastName || !gpa || !grade || !rank || !preferredSchool) {
+                alert('Please fill out all fields before submitting.');
+                return;
+            }
+
+            // Create a new instance of the Student class
+            const newStudent = new Student(firstName, lastName, gpa, grade, rank, sat, act, preferredSchool);
+
+            // Store the student object in sessionStorage
+            sessionStorage.setItem('studentData', JSON.stringify(newStudent));
+
+            // Redirect to the report page
+            window.location.href = 'report.html';
+        }
+    </script>
+</body>
+</html>

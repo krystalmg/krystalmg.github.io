@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Landing Page</title>
+    <style>
+        body {
+            display: flex;
+            background: linear-gradient(135deg, #3494E6 0%, #EC6EAD 100%); /* Colorful fading background */
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .image-half {
+            background-image: url('https://static.wixstatic.com/media/9cfe23_f98e6ec4ff4e44e0be9ec40d76c92b4b~mv2.png/v1/fill/w_540,h_406,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/9cfe23_f98e6ec4ff4e44e0be9ec40d76c92b4b~mv2.png');
+            background-size: cover;
+            background-position: center;
+            flex: 2; /* Adjust the flex value */
+            height: 100vh;
+        }
+
+        .info-half {
+            flex: 1;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            text-align: center;
+        }
+
+        #createProfileButton {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #3494E6; /* Use the same color as the background gradient */
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .explanation {
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-half"></div>
+    <div class="info-half">
+        <h1>Welcome to our website!</h1>
+        <p class="explanation">Curious about what you need to do to get into your dream school or what alternatives are out there if you don't get accepted. 
+                               Our website helps you figure out what you need to do to get into the college of your choice. 
+				Simply click the "Create Profile" button and answer the prompts and we'll generate a report on 
+                               	what you need to do to have the best chances of being accepted. We'll also provide you with resources to help 
+				improve your Test scores and grades to have a greater chance of being accepted into your dream school. 
+                                      </p>
+        <button id="createProfileButton">Create Profile</button>
+    </div>
+    
+    <script>
+        document.getElementById('createProfileButton').addEventListener('click', () => {
+            window.location.href = 'profile.html';
+        });
+    </script>
+</body>
+</html>
