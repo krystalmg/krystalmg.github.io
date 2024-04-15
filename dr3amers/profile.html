@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Profile</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" >
+    <style>
+        body {
+            background: linear-gradient(135deg, #3494E6 0%, #EC6EAD 100%);
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: 2;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Report Container Styles */
+        #reportContainer {
+            display: none;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .congrats-message {
+            color: green;
+        }
+
+        .denied-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <form id="profileForm">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" required>
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" required>
+
+        <label for="gpa">GPA:</label>
+        <select id="gpa" required>
+            <option value="" disabled selected hidden>Select GPA</option>
+            <option value="2.0">2.0</option>
+            <option value="2.5">2.5</option>
+            <option value="3.0">3.0</option>
+            <option value="3.5">3.5</option>
+            <option value="4.0">4.0</option>
+            <option value="4.5">4.5</option>
+            <option value="5.0">5.0</option>
+        </select>
+
+        <label for="grade">Grade:</label>
+        <select id="grade" required>
+            <option value="" disabled selected hidden>Select Grade</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+
+        <label for="rank">Rank:</label>
+        <select id="rank" required>
+            <option value="" disabled selected hidden>Select Rank</option>
+            <option value="1">1</option>
+            <option value="2-10">2-10</option>
+            <option value="10-50">10-50</option>
+            <option value=">50">&gt;50</option>
+        </select>
+
+        <label for="sat">SAT:</label>
+        <input type="text" id="sat">
+
+        <label for="preferredSchool">Preferred School:</label>
+        <select id="preferredSchool" required>
+            <option value="" disabled selected hidden>Select Preferred School</option>
+            <option value="UCF">UCF</option>
+            <option value="FSU">FSU</option>
+            <option value="UF">UF</option>
+            <option value="GT">GT</option>
+            <option value="UA">UA</option>
+        </select>
+
+        <button type="button" id="submitBtn">Submit</button>
+    </form>
+
+    <!-- Report Container -->
+    <div id="reportContainer">
+        <p id="reportMessage"></p>
+        <button class="btn" id="satPrepButton" onclick="window.open('https://www.khanacademy.org/test-prep/sat', '_blank')">SAT Prep</button>
+        <button class="btn" id="classHelpButton" onclick="window.open('https://www.khanacademy.org/', '_blank')">Class Help</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('submitBtn').addEventListener('click', generateReport);
+        });
+
+        function generateReport() {
+            // Validate all fields are filled
+            const form = document.getElementById('profileForm');
+            if (!form.checkValidity()) {
+                alert('Please fill out all fields before submitting.');
+                return;
+            }
+
+            // Retrieve the student object from sessionStorage
+            const student = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                gpa: parseFloat(document.getElementById('gpa').value) || null,
+                grade: document.getElementById('grade').value,
+                rank: document.getElementById('rank').value,
+                sat: parseInt(document.getElementById('sat').value) || null,
+                preferredSchool: document.getElementById('preferredSchool').value,
+            };
+
+            // Store the student object in sessionStorage
+            sessionStorage.setItem('student', JSON.stringify(student));
+
+            // Array of university objects
+            const universities = [
+                { name: 'UCF', preferedSAT: [1200, 1600], preferedGPA: [3.0, 5.0] },
+                { name: 'FSU', preferedSAT: [1100, 1500], preferedGPA: [2.5, 4.5] },
+                { name: 'UF', preferedSAT: [1300, 1600], preferedGPA: [3.5, 5.0] },
+                { name: 'GT', preferedSAT: [1400, 1600], preferedGPA: [4.0, 5.0] },
+                { name: 'UA', preferedSAT: [1200, 1400], preferedGPA: [3.0, 4.5] },
+            ];
+
+            // Find matching university
+            const matchingUniversity = universities.find(university => university.name === student.preferredSchool);
+
+            // Check if SAT and GPA are in the preferred range
+            const isSATInRange = student.sat >= matchingUniversity.preferedSAT[0] && student.sat <= matchingUniversity.preferedSAT[1];
+            const isGPAInRange = student.gpa >= matchingUniversity.preferedGPA[0] && student.gpa <= matchingUniversity.preferedGPA[1];
+
+            // Display congrats or denied message
+            const reportMessage = document.getElementById('reportMessage');
+            const satPrepButton = document.getElementById('satPrepButton');
+            const classHelpButton = document.getElementById('classHelpButton');
+
+            if (isSATInRange) {
+                if (isGPAInRange) {
+                    reportMessage.textContent = 'CONGRATS! You meet the criteria.';
+                    reportMessage.classList.add('congrats-message');
+                    satPrepButton.style.display = 'none'; 
+                    classHelpButton.style.display = 'none'; 
+                } else {
+                    const closestGPA = getClosestToTarget(student.gpa, matchingUniversity.preferedGPA);
+                    const closestGPARequirement = closestGPA >= matchingUniversity.preferedGPA[0]
+                        ? `a ${closestGPA}`
+                        : `an ${closestGPA}`;
+
+                    reportMessage.textContent = `DENIED! As it stands, you need to improve your GPA. You have ${student.gpa}, and ${matchingUniversity.name} requires ${closestGPARequirement}. Here are some resources to help you improve your chances of being accepted.
+                                                 Here are some alternative schools you can attend: Talladega, SU, FM, KSU, ASU`;
+                    reportMessage.classList.add('denied-message');
+                    satPrepButton.style.display = 'block'; 
+                    classHelpButton.style.display = 'block'; 
+                }
+            } else {
+                const closestSAT = getClosestToTarget(student.sat, matchingUniversity.preferedSAT);
+                const closestSATRequirement = closestSAT >= matchingUniversity.preferedSAT[0]
+                    ? `a ${closestSAT}`
+                    : `an ${closestSAT}`;
+
+                reportMessage.textContent = `DENIED! As it stands, you need to improve your SAT score. You have ${student.sat}, and ${matchingUniversity.name} requires ${closestSATRequirement}. Here are some resources to help you improve your SAT score.
+					     Here are some alternative schools you can attend: Talladega, SU, FM, KSU, ASU`;
+                reportMessage.classList.add('denied-message');
+                satPrepButton.style.display = 'block'; 
+                classHelpButton.style.display = 'block'; 
+            }
+
+            
+            document.getElementById('reportContainer').style.display = 'block';
+        }
+
+        
+        function getClosestToTarget(target, arr) {
+            return arr.reduce((prev, curr) => Math.abs(curr - target) < Math.abs(prev - target) ? curr : prev);
+        }
+    </script>
+</body>
+</html>
